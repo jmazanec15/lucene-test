@@ -17,7 +17,7 @@ an extremely efficient, yet configurable manner. Specifically, the goals are
 
 ## Architecture
 
-![images/high-level-architecture.png](images/high-level-architecture.png)
+![images/high-level-architecture.png](docs/images/high-level-architecture.png)
 
 ## Usage
 

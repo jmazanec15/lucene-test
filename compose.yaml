@@ -14,7 +14,7 @@ services:
       - node.name=test
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms${TEST_JVM} -Xmx${TEST_JVM} -XX:StartFlightRecording=delay=5s,dumponexit=true,filename=/share-data/profiles/${RUN_ID}.jfr"
+      - "OPENSEARCH_JAVA_OPTS=-Xms${TEST_JVM} -Xmx${TEST_JVM}"
       - "DISABLE_SECURITY_PLUGIN=true"
       - "RUN_ID=${RUN_ID}"
     ulimits:
@@ -42,7 +42,7 @@ services:
     cap_add:
       - SYS_ADMIN
   metrics:
-    image: opensearchproject/opensearch:2.14.0
+    image: opensearchproject/opensearch:2.18.0
     container_name: metrics
     environment:
       - cluster.name=metrics
@@ -89,7 +89,6 @@ services:
     environment:
       - "OSB_PROCEDURE=${OSB_PROCEDURE}"
       - "OSB_PARAMS=${OSB_PARAMS}"
-      - "OSB_SHOULD_PROFILE=${OSB_SHOULD_PROFILE}"
       - "RUN_ID=${RUN_ID}"
     deploy:
       resources:

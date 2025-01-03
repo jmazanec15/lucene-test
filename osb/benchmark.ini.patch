@@ -1,6 +1,36 @@
+[meta]
+config.version = 17
+
+[system]
+env.name = local
+
+[node]
+root.dir = /opensearch-benchmark/.benchmark/benchmarks
+src.root.dir = /opensearch-benchmark/.benchmark/benchmarks/src
+
+[source]
+remote.repo.url = https://github.com/opensearch-project/OpenSearch.git
+opensearch.src.subdir = opensearch
+
+[benchmarks]
+local.dataset.cache = /opensearch-benchmark/.benchmark/benchmarks/data
+
+[results_publishing]
 datastore.type = opensearch
 datastore.host = metrics
 datastore.port = 9202
 datastore.secure = False
 datastore.user =
 datastore.password =
+
+[workloads]
+default.url = https://github.com/jmazanec15/opensearch-benchmark-workloads
+
+[provision_configs]
+default.dir = default-provision-config
+
+[defaults]
+preserve_benchmark_candidate = false
+
+[distributions]
+release.cache = true

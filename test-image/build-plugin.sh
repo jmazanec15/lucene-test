@@ -7,8 +7,7 @@ echo ${JAVA_HOME}
 REPO_ENDPOINT=$1
 REPO_BRANCH=$2
 OPENSEARCH_VERSION=$3
-git clone -b $REPO_BRANCH $REPO_ENDPOINT
-#TODO Fix this to point to correct endpoint
+git clone -b $REPO_BRANCH $REPO_ENDPOINT k-NN
 cd k-NN
 
 if [ "$ARCH" = "x86_64" ]; then
