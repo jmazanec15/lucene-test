@@ -29,9 +29,7 @@ if [ ! -f "/opensearch-benchmark/.benchmark/benchmark.ini" ]; then
   mkdir -p -m 777 ~/.benchmark
   cp /benchmark.ini.patch ~/.benchmark/benchmark.ini
   opensearch-benchmark execute-test > /dev/null 2>&1
-  cat ~/.benchmark/benchmark.ini
 fi
-
 
 # Run OSB and write output to a particular file in results
 echo "Running OSB..."
@@ -45,6 +43,3 @@ opensearch-benchmark execute-test \
     --kill-running-processes \
     --results-format=csv \
     --results-file=${RESULTS_PATH}/osb-results-${RUN_ID}.csv | tee /tmp/output.txt
-
-cat /opensearch-benchmark/.benchmark/benchmarks/workloads/default/vectorsearch/workload.json
-cp /opensearch-benchmark/.benchmark/logs/benchmark.log /share-data

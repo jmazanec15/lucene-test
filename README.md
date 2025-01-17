@@ -1,5 +1,7 @@
 # OpenSearch Single Node KNN Experiments
 
+**IMPORTANT: REPO UNDER CONSTRUCTION - README INACCURATE FOR NOW**
+
 ## Overview
 
 This repo contains a simple framework for running single node OpenSearch experiments for the k-NN plugin, using 
@@ -62,7 +64,6 @@ There are several environment variables that need to be configured in order to r
 | METRICS_MEM_SIZE   | Amount of total memory metrics container will be limited at. (i.e. 4G)                                               |
 | OSB_PROCEDURE      | OSB procedure to be run                                                                                              |
 | OSB_PARAMS         | OSB params to be used (include .json extension)                                                                      |
-| OSB_SHOULD_PROFILE | Should profiling be triggered for this run (i.e. true or false)                                                      |
 | OSB_CPU_COUNT      | Number of CPUs OSB gets (i.e 2)                                                                                      |
 | OSB_MEM_SIZE       | Amount of memory OSB gets (i.e. 4g)                                                                                  |
 | OPENSEARCH_VERSION | Version of OpenSearch to use (i.e. 3.0.0 or 2.15.0)                                                                  |

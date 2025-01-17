@@ -2,7 +2,7 @@ FROM opensearchproject/opensearch-benchmark:latest
 
 USER 0
 RUN ["apt-get", "update"]
-RUN ["apt-get", "install", "jq", "--assume-yes"]
+RUN ["apt-get", "install", "jq", "curl", "--assume-yes"]
 USER 1000
 COPY osb-entry-point.sh /
 COPY benchmark.ini.patch /
