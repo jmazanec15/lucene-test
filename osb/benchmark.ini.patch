@@ -23,9 +23,6 @@ datastore.secure = False
 datastore.user =
 datastore.password =
 
-[workloads]
-default.url = https://github.com/jmazanec15/opensearch-benchmark-workloads
-
 [provision_configs]
 default.dir = default-provision-config
 
