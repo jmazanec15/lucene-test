@@ -9,7 +9,7 @@ REPO_BRANCH=$2
 OPENSEARCH_VERSION=$3
 git clone -b $REPO_BRANCH $REPO_ENDPOINT k-NN
 cd k-NN
-
+ARCH=$(arch)
 if [ "$ARCH" = "x86_64" ]; then
     ARCHITECTURE=x64
 else

@@ -14,7 +14,7 @@ services:
       - node.name=test
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms${TEST_JVM} -Xmx${TEST_JVM}"
+      - "OPENSEARCH_JAVA_OPTS=-Xms${TEST_JVM} -Xmx${TEST_JVM} -XX:StartFlightRecording=delay=5s,dumponexit=true,filename=/share-data/profiles/${RUN_ID}.jfr"
       - "DISABLE_SECURITY_PLUGIN=true"
       - "RUN_ID=${RUN_ID}"
     ulimits:
@@ -41,8 +41,6 @@ services:
       - seccomp:unconfined
     cap_add:
       - SYS_ADMIN
-    profiles:
-      - local
   metrics:
     image: opensearchproject/opensearch:2.18.0
     container_name: metrics
@@ -75,8 +73,6 @@ services:
         limits:
           cpus: "${METRICS_CPU_COUNT}"
           memory: ${METRICS_MEM_SIZE}
-    profiles:
-      - local
   osb:
     image: custom-osb
     container_name: osb
@@ -100,31 +96,6 @@ services:
         limits:
           cpus: "${OSB_CPU_COUNT}"
           memory: ${OSB_MEM_SIZE}
-    profiles:
-      - local
-  osb-remote:
-    image: custom-osb
-    container_name: osb
-    build:
-      context: osb
-      dockerfile: Dockerfile.customosb
-    volumes:
-      - share-data:/share-data
-    networks:
-      - test-net
-    environment:
-      - "OSB_PROCEDURE=${OSB_PROCEDURE}"
-      - "OSB_PARAMS=${OSB_PARAMS}"
-      - "RUN_ID=${RUN_ID}"
-      - "ENDPOINT=${ENDPOINT}"
-      - "OSB_WORKLOADS_REPO=${OSB_WORKLOADS_REPO}"
-    deploy:
-      resources:
-        limits:
-          cpus: "${OSB_CPU_COUNT}"
-          memory: ${OSB_MEM_SIZE}
-    profiles:
-      - remote
 volumes:
   test:
     driver: local

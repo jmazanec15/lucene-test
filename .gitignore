@@ -2,3 +2,7 @@
 *scratch*
 .idea
 .DS_Store
+demo/share-data/results
+demo/share-data/osb/benchmark-*
+demo/share-data/os-data/*
+!demo/share-data/os-data/.gitignore

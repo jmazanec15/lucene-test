@@ -11,7 +11,7 @@ an extremely efficient, yet configurable manner.
 
 ## Usage
 
-The system is architected with a single [docker-compose file](compose.yaml). It has 2 profiles: local and remote. In local mode, it will:
+The system is architected with around 2 docker-compose files: local and remote. In local mode, it will:
 1. Build a custom test OpenSearch docker image based on provided Github repo and test branch
 2. Run a single node cluster with the custom docker image and resource constraints.
 3. Run a lightweight separate OpenSearch metric cluster for OSB to output results to (this collects all metrics in addition to final report)
@@ -26,18 +26,18 @@ See [Parameters](#parameters) for more details.
 
 To run end to end, 
 ```
-docker compose --env-file test.env -f compose.yaml --profile local up
+docker compose --env-file test.env -f compose-local.yaml up
 
 # Stop the framework
-docker compose --env-file test.env -f compose.yaml --profile local down
+docker compose --env-file test.env -f compose-local.yaml down
 ```
 
 If you want to just execute against a remote cluster,
 ```
-docker compose --env-file test.env -f compose.yaml --profile remote up
+docker compose --env-file test.env -f compose-remote.yaml up
 
 # Stop the framework
-docker compose --env-file test.env -f compose.yaml --profile remote down
+docker compose --env-file test.env -f compose-remote.yaml down
 ```
 
 ### Parameters
