@@ -8,7 +8,7 @@
 </head>
 <body class="container">
   <h3>Lucene Test Runner</h3>
-  <form id="testForm" onsubmit="return generateEnv();">
+  <form id="testForm" onsubmit="return generateScript();">
     <div class="input-field">
       <input id="RUN_ID" name="RUN_ID" type="text" required>
       <label for="RUN_ID">Run ID</label>
@@ -51,38 +51,41 @@
       </select>
       <label>Run Type</label>
     </div>
-    <button class="btn waves-effect waves-light" type="submit">Download Env File</button>
+    <button class="btn waves-effect waves-light" type="submit">Download Run Script</button>
   </form>
 
   <div id="instructions" class="section">
-    <p>After downloading <code>test.env</code>, run:</p>
-    <pre>docker compose --env-file test.env -f compose-test.yaml up</pre>
+    <p>After downloading <code>run.sh</code>, make it executable and run:</p>
+    <pre>chmod +x run.sh
+./run.sh</pre>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('select');
-      M.FormSelect.init(elems);
-    });
-
-    function generateEnv() {
-      var formData = new FormData(document.getElementById('testForm'));
-      var lines = [];
-      formData.forEach(function(value, key) {
-        if (value) {
-          lines.push(key + '=' + value);
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
       });
-      var blob = new Blob([lines.join('\n') + '\n'], {type: 'text/plain'});
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'test.env';
-      a.click();
-      URL.revokeObjectURL(url);
-      return false;
-    }
-  </script>
+
+      function generateScript() {
+        var formData = new FormData(document.getElementById('testForm'));
+        var lines = ['#!/bin/bash'];
+        formData.forEach(function(value, key) {
+          if (value) {
+            lines.push(key + '="' + value.replace(/"/g, '\\"') + '"');
+          }
+        });
+        lines.push('');
+        lines.push('docker compose -f compose-test.yaml up');
+        var blob = new Blob([lines.join('\n') + '\n'], {type: 'text/plain'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'run.sh';
+        a.click();
+        URL.revokeObjectURL(url);
+        return false;
+      }
+    </script>
 </body>
 </html>
