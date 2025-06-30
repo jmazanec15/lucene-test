@@ -1,17 +1,19 @@
 services:
   test:
     image: custom-luceneutil
-    build:
-      context: test-image
-      dockerfile: Dockerfile.testbuild
-      args:
-        TEST_REPO: ${TEST_REPO}
-        TEST_BRANCH: ${TEST_BRANCH}
-        OPENSEARCH_VERSION: ${LUCENE_VERSION}
+      build:
+        context: test-image
+        dockerfile: Dockerfile.testbuild
+        args:
+          TEST_REPO: ${TEST_REPO}
+          TEST_BRANCH: ${TEST_BRANCH}
+          LUCENEUTIL_REPO: ${LUCENEUTIL_REPO}
+          OPENSEARCH_VERSION: ${LUCENE_VERSION}
     container_name: test
-    environment:
-      - "OPENSEARCH_JAVA_OPTS=-Xms${TEST_JVM} -Xmx${TEST_JVM} -XX:StartFlightRecording=delay=5s,dumponexit=true,filename=/share-data/profiles/${RUN_ID}.jfr"
-      - "RUN_ID=${RUN_ID}"
+      environment:
+        - "OPENSEARCH_JAVA_OPTS=-Xms${TEST_JVM} -Xmx${TEST_JVM} -XX:StartFlightRecording=delay=5s,dumponexit=true,filename=/share-data/profiles/${RUN_ID}.jfr"
+        - "RUN_ID=${RUN_ID}"
+        - "LUCENE_UTIL_ARGS=${LUCENE_UTIL_ARGS}"
     ulimits:
       memlock:
         soft: -1
