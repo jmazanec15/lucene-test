@@ -40,7 +40,8 @@ In order to run a test, you need to configure your test environment:
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | RUN_ID           | (String) Unique run identifier                                                                                                                                                                                                                                                                                                        |
 | SHARE_DATA_PATH  | (String) File path where everything will be mounted. In this path, there should be a folder, lucene-data, which will be where lucene-data is stored. This allows for a different device to be used. In this path, you should put the necessary parameters and the necessary datasets because itll be accessible by the osb container. |
-| LUCENEUTIL_REPO  | Repo containing custom OSB workloads. If you want to add custom extensions, etc, fork the workloads, add them to main branch, and push. By default, it will be the default workloads                                                                                                                                                  |
+| LUCENEUTIL_REPO  | Git repository containing your luceneutil fork to build and run benchmarks |
+| LUCENE_VERSION   | Version string used when building lucene |
 | TEST_REPO        | Link to lucene repo. Plugin will be built from source from here.                                                                                                                                                                                                                                                                      |
 | TEST_BRANCH      | Lucene branch name. Plugin will be built from source from here                                                                                                                                                                                                                                                                        |
 | TEST_JVM         | Amount of JVM to be used for test container (i.e. 32g)                                                                                                                                                                                                                                                                                |
@@ -55,6 +56,7 @@ SHARE_DATA_PATH=
 LUCENEUTIL_REPO=
 TEST_REPO=
 TEST_BRANCH=
+LUCENE_VERSION=
 TEST_JVM=
 TEST_CPU_COUNT=
 TEST_MEM_SIZE=
