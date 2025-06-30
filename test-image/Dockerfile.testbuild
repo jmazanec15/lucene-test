@@ -1,28 +1,21 @@
 # Build the plugin
-ARG OPENSEARCH_VERSION
-FROM opensearchstaging/ci-runner:ci-runner-al2-opensearch-build-v1 as build
-COPY ./build-plugin.sh /
+ARG LUCENE_VERSION
+FROM eclipse-temurin:23 as build
+COPY ./build-lucene.sh /
 
-ARG OPENSEARCH_VERSION
+ARG LUCENE_VERSION
 ARG TEST_REPO
 ARG TEST_BRANCH
-RUN echo ${OPENSEARCH_VERSION}
-RUN bash /build-plugin.sh ${TEST_REPO} ${TEST_BRANCH} ${OPENSEARCH_VERSION}
+RUN echo ${LUCENE_VERSION}
+RUN bash /build-luceneutil.sh ${TEST_REPO} ${TEST_BRANCH} ${LUCENE_VERSION}
 
 # Build the actual image
-FROM opensearchstaging/opensearch:${OPENSEARCH_VERSION}
-ARG OPENSEARCH_VERSION
+FROM eclipse-temurin:23
+ARG LUCENE_VERSION
 USER root
 RUN yum install unzip procps -y
-RUN yum install -y jemalloc-devel
-ENV LD_PRELOAD=/usr/lib64/libjemalloc.so.2
-USER opensearch
-RUN  rm -rf plugins/opensearch-knn
-RUN mkdir plugins/opensearch-knn
-COPY --from=build /home/ci-runner/k-NN/build/distributions/opensearch-knn-${OPENSEARCH_VERSION}.0-SNAPSHOT.zip plugins/opensearch-knn/opensearch-knn-${OPENSEARCH_VERSION}.0-SNAPSHOT.zip
-RUN unzip plugins/opensearch-knn/opensearch-knn-${OPENSEARCH_VERSION}.0-SNAPSHOT.zip -d plugins/opensearch-knn/
+USER luceneutil
 COPY custom-entrypoint.sh /custom-entrypoint.sh
-COPY utils/graceful-shutdown-poller.sh /graceful-shutdown-poller.sh
 COPY utils/process-stats-collector.sh /process-stats-collector.sh
 
 ENTRYPOINT ["/bin/bash", "/custom-entrypoint.sh"]

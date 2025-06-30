@@ -1,9 +1,8 @@
-# OpenSearch Single Node KNN Experiments
+# Lucene Tests
 
 ## Overview
 
-This repo contains a simple framework for running single node OpenSearch experiments for the k-NN plugin, using 
-[Docker compose](https://docs.docker.com/compose/) and [OpenSearch Benchmarks](https://opensearch.org/docs/latest/benchmark/).
+This repo contains a simple framework for running lucene benchmarks inside of a docker environment.
 
 ## Goals
 The main goal of this project is to allow users to run highly-controlled performance tests on PoC code in 
@@ -26,18 +25,10 @@ See [Parameters](#parameters) for more details.
 
 To run end to end, 
 ```
-docker compose --env-file test.env -f compose-local.yaml up
+docker compose --env-file test.env -f compose-test.yaml up
 
 # Stop the framework
-docker compose --env-file test.env -f compose-local.yaml down
-```
-
-If you want to just execute against a remote cluster,
-```
-docker compose --env-file test.env -f compose-remote.yaml up
-
-# Stop the framework
-docker compose --env-file test.env -f compose-remote.yaml down
+docker compose --env-file test.env -f compose-test.yaml down
 ```
 
 ### Parameters
@@ -45,64 +36,28 @@ docker compose --env-file test.env -f compose-remote.yaml down
 In order to run a test, you need to configure your test environment:
 
 
-| Key Name           | Profiles     | Description                                                                                                                                                                                                                                                                                                                   |
-|--------------------|:-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| RUN_ID             | local,remote | (String) Unique run identifier                                                                                                                                                                                                                                                                                                |
-| SHARE_DATA_PATH    | local,remote | (String) File path where everything will be mounted. In this path, there should be a folder, os-data, which will be where os-data is stored. This allows for a different device to be used. In this path, you should put the necessary parameters and the necessary datasets because itll be accessible by the osb container. |
-| OSB_WORKLOADS_REPO | local,remote | Repo containing custom OSB workloads. If you want to add custom extensions, etc, fork the workloads, add them to main branch, and push. By default, it will be the default workloads                                                                                                                                          |
-| ENDPOINT           | remote       | Remote endpoint to test against. Should include port, if necessary.                                                                                                                                                                                                                                                           |
-| OPENSEARCH_VERSION | local        | Version of OpenSearch to use (i.e. 3.0.0 or 2.15.0)                                                                                                                                                                                                                                                                           |
-| TEST_REPO          | local        | Link to k-NN repo. Plugin will be built from source from here. (i.e. https://github.com/opensearch-project/k-NN.git)                                                                                                                                                                                                          |
-| TEST_BRANCH        | local        | k-NN branch name. Plugin will be built from source from here                                                                                                                                                                                                                                                                  |
-| TEST_JVM           | local        | Amount of JVM to be used for test container (i.e. 32g)                                                                                                                                                                                                                                                                        |
-| TEST_CPU_COUNT     | local        | Number of CPUs test container will get. (i.e. 2)                                                                                                                                                                                                                                                                              |
-| TEST_MEM_SIZE      | local        | Amount of total memory test container will be limited at. (i.e. 4G)                                                                                                                                                                                                                                                           |
-| METRICS_JVM        | local        | Amount of JVM to be used for metrics container (i.e. 1g)                                                                                                                                                                                                                                                                      |
-| METRICS_CPU_COUNT  | local        | Number of CPUs metrics container will get. (i.e. 2)                                                                                                                                                                                                                                                                           |
-| METRICS_MEM_SIZE   | local        | Amount of total memory metrics container will be limited at. (i.e. 4G)                                                                                                                                                                                                                                                        |
-| OSB_PROCEDURE      | local,remote | OSB procedure to be run                                                                                                                                                                                                                                                                                                       |
-| OSB_PARAMS         | local,remote | OSB params to be used (include .json extension)                                                                                                                                                                                                                                                                               |
-| OSB_CPU_COUNT      | local,remote | Number of CPUs OSB gets (i.e 2)                                                                                                                                                                                                                                                                                               |
-| OSB_MEM_SIZE       | local,remote | Amount of memory OSB gets (i.e. 4g)                                                                                                                                                                                                                                                                                           |
+| Key Name         | Description                                                                                                                                                                                                                                                                                                                           |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| RUN_ID           | (String) Unique run identifier                                                                                                                                                                                                                                                                                                        |
+| SHARE_DATA_PATH  | (String) File path where everything will be mounted. In this path, there should be a folder, lucene-data, which will be where lucene-data is stored. This allows for a different device to be used. In this path, you should put the necessary parameters and the necessary datasets because itll be accessible by the osb container. |
+| LUCENEUTIL_REPO  | Repo containing custom OSB workloads. If you want to add custom extensions, etc, fork the workloads, add them to main branch, and push. By default, it will be the default workloads                                                                                                                                                  |
+| TEST_REPO        | Link to lucene repo. Plugin will be built from source from here.                                                                                                                                                                                                                                                                      |
+| TEST_BRANCH      | Lucene branch name. Plugin will be built from source from here                                                                                                                                                                                                                                                                        |
+| TEST_JVM         | Amount of JVM to be used for test container (i.e. 32g)                                                                                                                                                                                                                                                                                |
+| TEST_CPU_COUNT   | Number of CPUs test container will get. (i.e. 2)                                                                                                                                                                                                                                                                                      |
+| TEST_MEM_SIZE    | Amount of total memory test container will be limited at. (i.e. 4G)                                                                                                                                                                                                                                                                   |
+| LUCENE_UTIL_ARGS | OSB procedure to be run                                                                                                                                                                                                                                                                                                               |
 
 Here is an example `test.env` for local:
 ```
-RUN_ID=coherev2-10m-on_disk-32x
-SHARE_DATA_PATH=/share-data
-OSB_WORKLOADS_REPO=https://github.com/jmazanec15/opensearch-benchmark-workloads
-OPENSEARCH_VERSION=2.19.0
-TEST_REPO=https://github.com/opensearch-project/k-NN.git
-TEST_BRANCH=2.19
-TEST_JVM=30517M
-TEST_CPU_COUNT=8
-TEST_MEM_SIZE=45232M
-METRICS_JVM=1G
-METRICS_CPU_COUNT=2
-METRICS_MEM_SIZE=4G
-OSB_PROCEDURE=derived-source-test
-OSB_PARAMS=/share-data/osb/params.json
-OSB_CPU_COUNT=5
-OSB_MEM_SIZE=16G
+RUN_ID=
+SHARE_DATA_PATH=
+LUCENEUTIL_REPO=
+TEST_REPO=
+TEST_BRANCH=
+TEST_JVM=
+TEST_CPU_COUNT=
+TEST_MEM_SIZE=
+LUCENE_UTIL_ARGS=
 ```
 
-Here is an example `test.env` for remote:
-```
-RUN_ID=coherev2-10m-on_disk-32x
-SHARE_DATA_PATH=/share-data
-OSB_WORKLOADS_REPO=https://github.com/jmazanec15/opensearch-benchmark-workloads
-ENDPOINT="localhost:9200"
-OSB_PROCEDURE=derived-source-test
-OSB_PARAMS=/share-data/osb/params.json
-OSB_CPU_COUNT=5
-OSB_MEM_SIZE=16G
-```
-
-
-### Configuring OSB
-
-For this framework, we want to avoid adding OpenSearch Benchmark custom code. Instead, you should fork the 
-[workloads repo](https://github.com/opensearch-project/opensearch-benchmark-workloads), make your custom changes, and set it via the ${OSB_WORKLOADS_REPO} parameter.
-
-## Results
-
-OSB will output its results to the "${SHARE_DATA}/results" path. In it, there will be a csv file that contains the OSB report. 
