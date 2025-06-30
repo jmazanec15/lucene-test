@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lucene Test Runner</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body class="container">
+  <h3>Lucene Test Runner</h3>
+  <form id="testForm" onsubmit="return generateEnv();">
+    <div class="input-field">
+      <input id="RUN_ID" name="RUN_ID" type="text" required>
+      <label for="RUN_ID">Run ID</label>
+    </div>
+    <div class="input-field">
+      <input id="SHARE_DATA_PATH" name="SHARE_DATA_PATH" type="text" required>
+      <label for="SHARE_DATA_PATH">Share Data Path</label>
+    </div>
+    <div class="input-field">
+      <input id="LUCENEUTIL_REPO" name="LUCENEUTIL_REPO" type="text">
+      <label for="LUCENEUTIL_REPO">LuceneUtil Repo</label>
+    </div>
+    <div class="input-field">
+      <input id="TEST_REPO" name="TEST_REPO" type="text">
+      <label for="TEST_REPO">Test Repo</label>
+    </div>
+    <div class="input-field">
+      <input id="TEST_BRANCH" name="TEST_BRANCH" type="text">
+      <label for="TEST_BRANCH">Test Branch</label>
+    </div>
+    <div class="input-field">
+      <input id="TEST_JVM" name="TEST_JVM" type="text">
+      <label for="TEST_JVM">Test JVM (e.g. 32g)</label>
+    </div>
+    <div class="input-field">
+      <input id="TEST_CPU_COUNT" name="TEST_CPU_COUNT" type="text">
+      <label for="TEST_CPU_COUNT">CPU Count</label>
+    </div>
+    <div class="input-field">
+      <input id="TEST_MEM_SIZE" name="TEST_MEM_SIZE" type="text">
+      <label for="TEST_MEM_SIZE">Memory Size (e.g. 4G)</label>
+    </div>
+    <div class="input-field">
+      <input id="LUCENE_UTIL_ARGS" name="LUCENE_UTIL_ARGS" type="text">
+      <label for="LUCENE_UTIL_ARGS">Lucene Util Args</label>
+    </div>
+    <div class="input-field">
+      <select id="run_type" disabled>
+        <option value="local" selected>Run Local</option>
+      </select>
+      <label>Run Type</label>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit">Download Env File</button>
+  </form>
+
+  <div id="instructions" class="section">
+    <p>After downloading <code>test.env</code>, run:</p>
+    <pre>docker compose --env-file test.env -f compose-test.yaml up</pre>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+    });
+
+    function generateEnv() {
+      var formData = new FormData(document.getElementById('testForm'));
+      var lines = [];
+      formData.forEach(function(value, key) {
+        if (value) {
+          lines.push(key + '=' + value);
+        }
+      });
+      var blob = new Blob([lines.join('\n') + '\n'], {type: 'text/plain'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'test.env';
+      a.click();
+      URL.revokeObjectURL(url);
+      return false;
+    }
+  </script>
+</body>
+</html>

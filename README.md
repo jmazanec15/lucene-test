@@ -61,3 +61,13 @@ TEST_MEM_SIZE=
 LUCENE_UTIL_ARGS=
 ```
 
+
+
+### Web UI
+
+A minimal static page is provided in the `web` directory to help configure tests.
+Open `web/index.html` in your browser, fill in the values and click **Download Env File**. This will create a `test.env` file that can be used to run the test locally:
+
+```bash
+docker compose --env-file test.env -f compose-test.yaml up
+```
