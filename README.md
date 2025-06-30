@@ -20,15 +20,15 @@ In remote mode, it will just run the OSB workload against an external endpoint.
 
 ### Example usage
 
-Before starting, you need to create an environment variable file, test.env, that contains all of the configs. 
-See [Parameters](#parameters) for more details. 
+Before starting, you need to create a small script, `run.sh`, that contains all of the configs.
+See [Parameters](#parameters) for more details.
 
 To run end to end, 
 ```
-docker compose --env-file test.env -f compose-test.yaml up
+./run.sh
 
 # Stop the framework
-docker compose --env-file test.env -f compose-test.yaml down
+docker compose -f compose-test.yaml down
 ```
 
 ### Parameters
@@ -49,8 +49,9 @@ In order to run a test, you need to configure your test environment:
 | TEST_MEM_SIZE    | Amount of total memory test container will be limited at. (i.e. 4G)                                                                                                                                                                                                                                                                   |
 | LUCENE_UTIL_ARGS | OSB procedure to be run                                                                                                                                                                                                                                                                                                               |
 
-Here is an example `test.env` for local:
+Here is an example `run.sh` for local:
 ```
+#!/bin/bash
 RUN_ID=
 SHARE_DATA_PATH=
 LUCENEUTIL_REPO=
@@ -61,6 +62,8 @@ TEST_JVM=
 TEST_CPU_COUNT=
 TEST_MEM_SIZE=
 LUCENE_UTIL_ARGS=
+
+docker compose -f compose-test.yaml up
 ```
 
 
@@ -68,8 +71,9 @@ LUCENE_UTIL_ARGS=
 ### Web UI
 
 A minimal static page is provided in the `web` directory to help configure tests.
-Open `web/index.html` in your browser, fill in the values and click **Download Env File**. This will create a `test.env` file that can be used to run the test locally:
+Open `web/index.html` in your browser, fill in the values and click **Download Run Script**. This will create a `run.sh` file that can be used to run the test locally:
 
 ```bash
-docker compose --env-file test.env -f compose-test.yaml up
+chmod +x run.sh
+./run.sh
 ```
