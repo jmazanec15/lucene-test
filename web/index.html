@@ -42,6 +42,21 @@
       <label for="TEST_MEM_SIZE">Memory Size (e.g. 4G)</label>
     </div>
     <div class="input-field">
+      <input id="INDEX_THREAD_COUNT" name="INDEX_THREAD_COUNT" type="number">
+      <label for="INDEX_THREAD_COUNT">Index Thread Count</label>
+    </div>
+    <div class="switch">
+      <label>
+        ForceMerge
+        <input id="ENABLE_FORCEMERGE" name="ENABLE_FORCEMERGE" type="checkbox">
+        <span class="lever"></span>
+      </label>
+    </div>
+    <div class="input-field">
+      <input id="MAX_CONCURRENT_CLIENTS" name="MAX_CONCURRENT_CLIENTS" type="number">
+      <label for="MAX_CONCURRENT_CLIENTS">Max Concurrent Clients</label>
+    </div>
+    <div class="input-field">
       <input id="LUCENE_UTIL_ARGS" name="LUCENE_UTIL_ARGS" type="text">
       <label for="LUCENE_UTIL_ARGS">Lucene Util Args</label>
     </div>
@@ -68,13 +83,16 @@
       });
 
       function generateScript() {
-        var formData = new FormData(document.getElementById('testForm'));
+        var form = document.getElementById('testForm');
+        var formData = new FormData(form);
         var lines = ['#!/bin/bash'];
         formData.forEach(function(value, key) {
+          if (key === 'ENABLE_FORCEMERGE') return;
           if (value) {
             lines.push(key + '="' + value.replace(/"/g, '\\"') + '"');
           }
         });
+        lines.push('ENABLE_FORCEMERGE=' + (document.getElementById('ENABLE_FORCEMERGE').checked ? 'true' : 'false'));
         lines.push('');
         lines.push('docker compose -f compose-test.yaml up');
         var blob = new Blob([lines.join('\n') + '\n'], {type: 'text/plain'});
