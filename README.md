@@ -48,6 +48,9 @@ In order to run a test, you need to configure your test environment:
 | TEST_CPU_COUNT   | Number of CPUs test container will get. (i.e. 2)                                                                                                                                                                                                                                                                                      |
 | TEST_MEM_SIZE    | Amount of total memory test container will be limited at. (i.e. 4G)                                                                                                                                                                                                                                                                   |
 | LUCENE_UTIL_ARGS | OSB procedure to be run                                                                                                                                                                                                                                                                                                               |
+| INDEX_THREAD_COUNT | Number of threads used when indexing |
+| ENABLE_FORCEMERGE | Enable force merge before running the benchmark (true/false) |
+| MAX_CONCURRENT_CLIENTS | Maximum concurrent clients for QPS benchmark |
 
 Here is an example `run.sh` for local:
 ```
@@ -61,6 +64,9 @@ LUCENE_VERSION=
 TEST_JVM=
 TEST_CPU_COUNT=
 TEST_MEM_SIZE=
+INDEX_THREAD_COUNT=
+ENABLE_FORCEMERGE=
+MAX_CONCURRENT_CLIENTS=
 LUCENE_UTIL_ARGS=
 
 docker compose -f compose-test.yaml up
