@@ -7,3 +7,5 @@ demo/share-data/osb/benchmark-*
 demo/share-data/os-data/*
 !demo/share-data/os-data/.gitignore
 web/node_modules
+test-image/data/*
+!test-image/data/.gitignore
