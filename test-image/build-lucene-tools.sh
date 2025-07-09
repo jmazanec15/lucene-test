@@ -32,6 +32,12 @@ git clone --depth 1 --branch "${LUCENEUTIL_BRANCH}" "${LUCENEUTIL_REPO}" luceneu
 
 echo "▶️  Compiling luceneutil KNN task"
 pushd luceneutil-src >/dev/null
+
+# These settings have been generated automatically on the first run.
+rm -rf  gradle.properties
+echo "external.lucene.repo=/test-src" >> gradle.properties
+echo "lucene.version=11.0.0" >> gradle.properties
+
 ./gradlew --no-daemon compileKnn
 popd >/dev/null
 

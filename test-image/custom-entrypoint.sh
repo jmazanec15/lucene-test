@@ -2,5 +2,6 @@
 
 set -mxe
 
-ls
-echo "Starting Lucene Util"
+cd /luceneutil-src
+
+./gradlew runKnnPerfTest

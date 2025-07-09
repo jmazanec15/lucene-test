@@ -6,6 +6,8 @@ ARG TEST_BRANCH
 ARG LUCENEUTIL_REPO
 ARG LUCENEUTIL_BRANCH
 
+COPY ./build-lucene-tools.sh /
+RUN apt-get update -qq && apt-get install git -y
 RUN bash /build-lucene-tools.sh $TEST_REPO $TEST_BRANCH $LUCENEUTIL_REPO $LUCENEUTIL_BRANCH
 
 # Build the actual image
