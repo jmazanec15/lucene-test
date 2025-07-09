@@ -10,8 +10,9 @@ COPY ./build-luceneutil.sh /
 
 RUN bash /build-lucene.sh ${TEST_REPO} ${TEST_BRANCH}
 RUN bash /build-luceneutil.sh ${LUCENEUTIL_REPO}
+RUN ls
 
 # Build the actual image
 FROM eclipse-temurin:24
-
+COPY ./custom-entrypoint.sh /
 ENTRYPOINT ["/bin/bash", "/custom-entrypoint.sh"]

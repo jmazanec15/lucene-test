@@ -2,4 +2,5 @@
 
 set -mxe
 
+ls
 echo "Starting Lucene Util"
