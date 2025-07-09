@@ -10,5 +10,10 @@ REPO_BRANCH=$2
 
 git clone --depth 1 -b "$REPO_BRANCH" "$REPO_ENDPOINT" /lucene
 cd /lucene
-./gradlew publishToMavenLocal -x test
+./gradlew jar
 cd /
+
+echo $REPO_ENDPOINT
+echo $REPO_BRANCH
+pwd
+echo "Hello"

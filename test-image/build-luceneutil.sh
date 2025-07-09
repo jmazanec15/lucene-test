@@ -9,6 +9,8 @@ set -xe
 LUCENEUTIL_REPO=$1
 
 git clone --depth 1 "$LUCENEUTIL_REPO" /luceneutil
-cd /luceneutil
-ant jar
-cd /
+#cd /luceneutil
+#ant jar
+#cd /
+pwd
+echo $LUCENEUTIL_REPO

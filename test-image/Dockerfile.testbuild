@@ -1,5 +1,5 @@
 # Stage to build lucene and luceneutil
-FROM eclipse-temurin:23 as build
+FROM eclipse-temurin:24 as build
 
 ARG TEST_REPO
 ARG TEST_BRANCH
@@ -12,12 +12,6 @@ RUN bash /build-lucene.sh ${TEST_REPO} ${TEST_BRANCH}
 RUN bash /build-luceneutil.sh ${LUCENEUTIL_REPO}
 
 # Build the actual image
-FROM eclipse-temurin:23
-USER root
-RUN yum install -y unzip procps ant git && rm -rf /var/cache/yum
-COPY --from=build /lucene /lucene
-COPY --from=build /luceneutil /luceneutil
-COPY custom-entrypoint.sh /custom-entrypoint.sh
-COPY utils/process-stats-collector.sh /process-stats-collector.sh
+FROM eclipse-temurin:24
 
 ENTRYPOINT ["/bin/bash", "/custom-entrypoint.sh"]
