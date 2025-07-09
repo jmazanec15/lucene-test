@@ -4,16 +4,13 @@ FROM eclipse-temurin:24 as build
 ARG TEST_REPO
 ARG TEST_BRANCH
 ARG LUCENEUTIL_REPO
+ARG LUCENEUTIL_BRANCH
 
-COPY ./build-lucene.sh /
-COPY ./build-luceneutil.sh /
-
-RUN bash /build-lucene.sh ${TEST_REPO} ${TEST_BRANCH}
-RUN bash /build-luceneutil.sh ${LUCENEUTIL_REPO}
-RUN ls
+RUN bash /build-lucene-tools.sh $TEST_REPO $TEST_BRANCH $LUCENEUTIL_REPO $LUCENEUTIL_BRANCH
 
 # Build the actual image
 FROM eclipse-temurin:24
-COPY --from=build /hello2.txt /
+COPY --from=build /test-src /test-src
+COPY --from=build /luceneutil-src /luceneutil-src
 COPY ./custom-entrypoint.sh /
 ENTRYPOINT ["/bin/bash", "/custom-entrypoint.sh"]
