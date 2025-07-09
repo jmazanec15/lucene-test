@@ -14,5 +14,6 @@ RUN ls
 
 # Build the actual image
 FROM eclipse-temurin:24
+COPY --from=build /hello2.txt /
 COPY ./custom-entrypoint.sh /
 ENTRYPOINT ["/bin/bash", "/custom-entrypoint.sh"]
