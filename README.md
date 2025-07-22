@@ -65,15 +65,3 @@ LUCENE_UTIL_ARGS=
 
 docker compose -f compose-test.yaml up
 ```
-
-
-
-### Web UI
-
-A minimal static page is provided in the `web` directory to help configure tests.
-Open `web/index.html` in your browser, fill in the values and click **Download Run Script**. This will create a `run.sh` file that can be used to run the test locally:
-
-```bash
-chmod +x run.sh
-./run.sh
-```

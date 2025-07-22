@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TELEMETRY_PATH=/share-data/telemetry
+TELEMETRY_PATH=/tmp/share-data/telemetry
 mkdir -p -m 777 ${TELEMETRY_PATH}
 
 LUCENEUTIL_PID=$1
